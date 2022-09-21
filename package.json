@@ -1,23 +1,8 @@
 {
-  "name": "@balancer-labs/balancer-core-v2",
+  "name": "beethoven-contracts",
   "version": "0.1.0",
   "description": "Core contracts of the balancer v2 system",
   "license": "GPL-3.0-only",
-  "homepage": "https://github.com/balancer-labs/balancer-core-v2#readme",
-  "repository": "git@github.com:balancer-labs/balancer-core-v2.git",
-  "bugs": {
-    "url": "https://github.com/balancer-labs/balancer-core-v2/issues"
-  },
-  "contributors": [
-    "Daniel Fernandez <daniel@balancer.finance>",
-    "Facu Spagnuolo <facu@balancer.finance>",
-    "Fernando Martinelli <fernando@balancer.finance>",
-    "Greg Taschuk <greg@balancer.finance>",
-    "Jeffrey Bennett <jeff@balancer.finance>",
-    "John Grant <john@balancer.finance>",
-    "Mike McDonald <mike@balancer.finance>",
-    "Nicolás Venturo <nico@balancer.finance>"
-  ],
   "scripts": {
     "measure-gas-deployment": "hardhat run lib/scripts/gas-measurement/deployment.ts",
     "measure-gas-single-pair": "hardhat run lib/scripts/gas-measurement/singlePair.ts",
