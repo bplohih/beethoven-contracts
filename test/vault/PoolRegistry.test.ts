@@ -23,7 +23,7 @@ describe('Vault - pool registry', () => {
     [, admin, lp, other] = await ethers.getSigners();
   });
 
-  sharedBeforeEach('deploy vault & tokens', async () => {
+  beforeEach('deploy vault & tokens', async () => {
     const weth = await TokensDeployer.deployToken({ symbol: 'WETH' });
 
     authorizer = await deploy('Authorizer', { args: [admin.address] });
@@ -56,7 +56,7 @@ describe('Vault - pool registry', () => {
   describe('pool properties', () => {
     let poolId: string;
 
-    sharedBeforeEach(async () => {
+    beforeEach(async () => {
       const receipt = await (await vault.connect(other).registerPool(GeneralPool)).wait();
 
       const event = expectEvent.inReceipt(receipt, 'PoolRegistered');
@@ -91,7 +91,7 @@ describe('Vault - pool registry', () => {
     function itManagesPoolQueriesCorrectly(specialization: PoolSpecializationSetting) {
       let poolId: string;
 
-      sharedBeforeEach(async () => {
+      beforeEach(async () => {
         const receipt = await (await vault.connect(other).registerPool(specialization)).wait();
 
         const event = expectEvent.inReceipt(receipt, 'PoolRegistered');
@@ -102,6 +102,7 @@ describe('Vault - pool registry', () => {
         await vault
           .connect(other)
           .registerTokens(poolId, [allTokens.DAI.address, allTokens.MKR.address], assetManagers);
+          
       });
 
       it('reverts when querying token balances of unexisting pools', async () => {
@@ -139,7 +140,7 @@ describe('Vault - pool registry', () => {
     describe('register', () => {
       const itHandlesTokensRegistrationProperly = (specialization: PoolSpecializationSetting) => {
         context('when the pool was created', () => {
-          sharedBeforeEach('create pool', async () => {
+          beforeEach('create pool', async () => {
             pool = await deploy('MockPool', { args: [vault.address, specialization] });
             poolId = await pool.getPoolId();
           });
@@ -240,7 +241,7 @@ describe('Vault - pool registry', () => {
             context('when one of the given tokens was already registered', () => {
               setTokensAddresses(2);
 
-              sharedBeforeEach('register tokens', async () => {
+              beforeEach('register tokens', async () => {
                 await pool.registerTokens(tokens.addresses, assetManagers);
               });
 
@@ -255,7 +256,7 @@ describe('Vault - pool registry', () => {
             it('reverts', async () => {
               await expect(
                 vault.connect(other).registerTokens(poolId, tokens.addresses, assetManagers)
-              ).to.be.revertedWith('CALLER_NOT_POOL');
+              ).to.be.revertedWith('CALLER_NOT_POOL'); 
             });
           });
         });
@@ -285,7 +286,7 @@ describe('Vault - pool registry', () => {
     describe('deregister', () => {
       const itHandlesTokensDeregistrationProperly = (specialization: PoolSpecializationSetting) => {
         context('when the pool was created', () => {
-          sharedBeforeEach('create pool', async () => {
+          beforeEach('create pool', async () => {
             pool = await deploy('MockPool', { args: [vault.address, specialization] });
             poolId = await pool.getPoolId();
           });
@@ -293,12 +294,12 @@ describe('Vault - pool registry', () => {
           context('when the sender is the pool', () => {
             context('when the given addresses where registered', () => {
               const itDeregistersTheTokens = () => {
-                sharedBeforeEach('register tokens', async () => {
+                beforeEach('register tokens', async () => {
                   await pool.registerTokens(tokens.addresses, assetManagers);
                 });
 
                 context('when some tokens still have some balance', () => {
-                  sharedBeforeEach('add some balance', async () => {
+                  beforeEach('add some balance', async () => {
                     await vault.connect(lp).joinPool(poolId, lp.address, other.address, {
                       assets: tokens.addresses,
                       maxAmountsIn: Array(tokens.length).fill(MAX_UINT256),

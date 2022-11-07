@@ -1,10 +1,10 @@
 import 'dotenv/config';
 import 'solidity-coverage';
-/* import '@tenderly/hardhat-tenderly'; */
 import 'hardhat-deploy';
 import 'hardhat-local-networks-config-plugin';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-waffle';
+import '@nomiclabs/hardhat-etherscan';
 
 import { task } from 'hardhat/config';
 import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names';
@@ -41,7 +41,8 @@ const CHAIN_IDS = {
   rinkeby: 4,
   ropsten: 3,
   dockerParity: 17,
-  fantomTestnet: 4002,
+  ftmTestnet: 4002,
+  bscTestnet: 97
 };
 
 const INFURA_KEY = process.env.INFURA_KEY || '';
@@ -97,9 +98,14 @@ export default {
       accounts: [`0x${DEPLOYER_PRIVATE_KEY}`, `0x${CONTROLLER_PRIVATE_KEY}`], // Using private key instead of mnemonic for vanity deploy
       saveDeployments: true,
     },
-    fantomTestnet: {
-      chainId: CHAIN_IDS.fantomTestnet,
+    ftmTestnet: {
+      chainId: CHAIN_IDS.ftmTestnet,
       url: 'https://rpc.testnet.fantom.network/',
+      accounts: accountsDeployed
+    },
+    bscTestnet: {
+      chainId: CHAIN_IDS.bscTestnet,
+      url: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
       accounts: accountsDeployed,
     },
   },
@@ -112,7 +118,8 @@ export default {
       [CHAIN_IDS.goerli]: 0,
       [CHAIN_IDS.rinkeby]: 0,
       [CHAIN_IDS.dockerParity]: 0,
-      [CHAIN_IDS.fantomTestnet]: 0,
+      [CHAIN_IDS.ftmTestnet]: 0,
+      [CHAIN_IDS.bscTestnet]: 0,
     },
     admin: {
       default: 1, // here this will by default take the first account as deployer
@@ -123,7 +130,8 @@ export default {
       [CHAIN_IDS.goerli]: 1,
       [CHAIN_IDS.rinkeby]: '0x44DDF1D6292F36B25230a72aBdc7159D37d317Cf',
       [CHAIN_IDS.dockerParity]: 1,
-      [CHAIN_IDS.fantomTestnet]: 1,
+      [CHAIN_IDS.ftmTestnet]: 1,
+      [CHAIN_IDS.bscTestnet]: 1,
     },
   },
   solidity: {
@@ -139,6 +147,96 @@ export default {
       },
     ],
     overrides: {
+      'contracts/tokens/pools/Proxy/GnosisSafeProxy.sol': {
+        version: '0.5.17',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/tokens/pools/Proxy/GnosisSafe.sol': {
+        version: '0.5.17',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/tokens/pools/ChainLink.sol': {
+        version: '0.8.14',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/tokens/pools/Aave.sol': {
+        version: '0.8.14',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/tokens/pools/BTC.sol': {
+        version: '0.8.14',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/tokens/pools/CurveDAO.sol': {
+        version: '0.8.14',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/tokens/pools/USDC.sol': {
+        version: '0.8.14',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/tokens/pools/MATIC.sol': {
+        version: '0.8.14',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/tokens/pools/Binance.sol': {
+        version: '0.8.14',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/tokens/pools/WFTM.sol': {
+        version: '0.8.14',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
       'contracts/tokens/fBEETS.sol': {
         version: '0.8.1',
         settings: {
@@ -259,12 +357,14 @@ export default {
       },
     },
   },
-  /* tenderly: {
-    username: 'balancer',
-    project: 'v2',
-  }, */
   paths: {
     deploy: 'deployments/migrations',
     deployments: 'deployments/artifacts',
+  },
+  etherscan: {
+    apiKey: {
+      bscTestnet: "P4SHTF8MGSU13BPYT3VTF4TWPUAWGFAIKB",
+      ftmTestnet: "WM4ZGA5IU33XKZV9SAI9XXZJJE3R3RXTAI"
+    }
   },
 };
