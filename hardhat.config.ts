@@ -23,8 +23,8 @@ const getPKs = () => {
   let adminAccount;
 
   // PKs without `0x` prefix
-  deployerAccount = '0x3e1f33b2a3f087112b2283c4c293e80ef40bf5588f169de9f5c4393808b94445';
-  adminAccount = '0x0835c19e5ea64f599b6e44a51893d25e6d399b5729b62d47cd3b855221fd0c28';
+  deployerAccount = process.env.KEY_DEPLOYER_ACCOUNT;
+  adminAccount = process.env.KEY_ADMIN_ACCOUNT;
 
   const accounts = [deployerAccount, adminAccount].filter((pk) => !!pk);
 
@@ -228,7 +228,7 @@ export default {
           },
         },
       },
-      'contracts/tokens/pools/WFTM.sol': {
+      'contracts/tokens/pools/WETH_FTM.sol': {
         version: '0.8.14',
         settings: {
           optimizer: {
@@ -364,7 +364,7 @@ export default {
   etherscan: {
     apiKey: {
       bscTestnet: "P4SHTF8MGSU13BPYT3VTF4TWPUAWGFAIKB",
-      ftmTestnet: "WM4ZGA5IU33XKZV9SAI9XXZJJE3R3RXTAI"
+      ftmTestnet: "XAYX69UZNP6U5AAE4366XP82A3E1QPF3RK"
     }
   },
 };

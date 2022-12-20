@@ -48,13 +48,13 @@ export const TokenList = [
     arguments: ['USD Coin', 'USDC', 6, totalSupply],
   },
   {
-    name: 'WFTM',
-    contractPath: 'contracts/tokens/pools/WFTM.sol:WFTM',
-    arguments: ['Wrapped Fantom', 'WFTM', 18, totalSupply],
+    name: 'WETH_FTM',
+    contractPath: 'contracts/tokens/pools/WETH_FTM.sol:WETH_FTM',
+    arguments: ['Wrapped Ethereum', 'WETH', 18, totalSupply],
   },
 ];
 
-export const ContractList = async () => {
+export const ContractList = async () => {  
   const { deployments, getNamedAccounts } = hre as HardhatRuntimeEnvironment;
   const { deployer, admin } = await getNamedAccounts();
 

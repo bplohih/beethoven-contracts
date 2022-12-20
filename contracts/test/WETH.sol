@@ -23,8 +23,8 @@ import "../vault/interfaces/IWETH.sol";
 contract WETH is AccessControl, IWETH {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    string public name = "Wrapped Ether";
-    string public symbol = "WETH";
+    string public name = "Wrapped Fantom";
+    string public symbol = "WFTM";
     uint8 public decimals = 18;
 
     event Deposit(address indexed dst, uint256 wad);

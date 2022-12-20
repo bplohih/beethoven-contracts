@@ -1,12 +1,11 @@
 import { ethers } from 'hardhat';
 import hre from 'hardhat';
-import { encodeJoinExitMockPool } from './utils';
 
 async function main() {
   const { deployments, getNamedAccounts } = hre;
   const { deployer, admin } = await getNamedAccounts();
   const MAX_UINT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
-  const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+  const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   const usdtAmounts = [ethers.utils.parseEther('1000')];
 
   const Vault_ADDRESS_CONTRACT = await (await deployments.get('Vault')).address;
@@ -37,19 +36,26 @@ async function main() {
   await USDC.approve(Vault_ADDRESS_CONTRACT, MAX_UINT);
   await BNB.approve(Vault_ADDRESS_CONTRACT, MAX_UINT); */
 
-  const joinPool = await Vault.joinPool(
-    '0xF94AEE7BD5BDFC249746EDF0C6FC0F5E3C1DA226000100000000000000000009',
-    deployer,
-    deployer,
+  const Swap = await Vault.swap(
     {
-      assets: [WFTM_ADDRESS_CONTRACT, MATIC_ADDRESS_CONTRACT, USDC_ADDRESS_CONTRACT, BNB_ADDRESS_CONTRACT],
-      maxAmountsIn: ['0', '10000000000000000000', '0', '0'],
+      poolId: "0x921f633eecbed8d26351e86a684ced1c7af9d70e000100000000000000000000",
+      kind: 0,
+      assetIn: USDC_ADDRESS_CONTRACT,
+      assetOut: BNB_ADDRESS_CONTRACT,
+      amount: ethers.utils.parseUnits('1000.0', 6),
+      userData: '0x',
+    },
+    {
+      sender: deployer,
       fromInternalBalance: false,
-      userData: encodeJoinExitMockPool(['0', '10000000000000000000', '0', '0'], 0),
-    }
-  )
-  
-  console.log('Vault: JoinPool Done!');
+      recipient: deployer,
+      toInternalBalance: false,
+    },
+    1,
+    MAX_UINT
+  );
+
+  console.log('Vault: Swap Done!');
 }
 
 main().catch((error) => {
