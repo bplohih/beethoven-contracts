@@ -1,7 +1,7 @@
 {
   "name": "beethoven-contracts",
   "version": "0.1.0",
-  "description": "Core contracts of the balancer v2 system",
+  "description": "Contracts beethoven-x for testnet and mainnet",
   "license": "GPL-3.0-only",
   "scripts": {
     "measure-gas-deployment": "hardhat run lib/scripts/gas-measurement/deployment.ts",

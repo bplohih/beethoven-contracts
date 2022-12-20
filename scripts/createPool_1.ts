@@ -8,20 +8,20 @@ async function main() {
 
   const WeightedPoolFactory = await ethers.getContractAt('WeightedPoolFactory', ADDRESS_CONTRACT);
 
-  console.log('WeightedPoolFactory: initialized');
+  console.log('WeightedPoolFactory: Initialized!');
 
   await WeightedPoolFactory.create(
     'BNB/ETH/Matic/Fantom',
     'BPT-BEMF',
     [
-      await (await deployments.get('WFTM')).address,
+      await (await deployments.get('WETH')).address,
       await (await deployments.get('MATIC')).address,
-      await (await deployments.get('USDC')).address,
+      await (await deployments.get('WETH_FTM')).address,
       await (await deployments.get('Binance')).address,
     ].sort((a: string, b) => compare(a, b)),
     ['200000000000000000', '200000000000000000', '300000000000000000', '300000000000000000'],
     '3000000000000000',
-    '0xe36316FbDEE9f9CC92C4bDa8D1E682f5A97F910e'
+    '0xF94AeE7BD5bdfc249746edF0C6Fc0F5E3c1DA226'
   );
 
   console.log('WeightedPoolFactory: Create Pool!');
